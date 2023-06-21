@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 from udm_hand_control.srv import *
 import rospy
@@ -17,11 +17,9 @@ from moveit_commander.conversions import pose_to_list
 class groupService:
 
 	def __init__(self):
-		rospy.init_node('indirect_service_server'%(self.group_name))
-		self.group_name = rospy.get_param('~group_name', "Middle")
-
 		moveit_commander.roscpp_initialize(sys.argv)
-		rospy.init_node('%s_service_server'%(self.group_name), anonymous=True)
+		rospy.init_node('indirect_kin_finger_service_server', anonymous=True)
+		self.group_name = rospy.get_param('~group_name', "middle")
 		self.robot=moveit_commander.RobotCommander()
 		self.scene =moveit_commander.PlanningSceneInterface()
 		self.move_group =moveit_commander.MoveGroupCommander(self.group_name)
@@ -36,7 +34,7 @@ class groupService:
 			pose_goal.position.x = req.pose.position.x
 			pose_goal.position.y = req.pose.position.y
 			pose_goal.position.z = req.pose.position.z
-			
+
 			self.move_group.set_pose_target(pose_goal)
 			self.move_group.go(wait=True)
 			self.move_group.stop()

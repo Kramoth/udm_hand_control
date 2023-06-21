@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 from udm_hand_control.srv import *
 import rospy
@@ -19,7 +19,7 @@ class groupService:
 	def __init__(self):
 		rospy.init_node('finger_service_server')
 		self.group_name = rospy.get_param('~group_name',"Middle")
-		print self.group_name
+		print(self.group_name)
 		moveit_commander.roscpp_initialize(sys.argv)
 
 		self.robot=moveit_commander.RobotCommander()
@@ -31,7 +31,7 @@ class groupService:
 
 	def handle_req(self,req):
 		try:
-			print req
+			print(req)
 			joint_goal = self.move_group.get_current_joint_values()
 			joint_goal[0] = req.joint1.data
 			joint_goal[1] = req.joint2.data
@@ -45,7 +45,7 @@ class groupService:
 			return rep
 		except Exception as e:
 			rep=direct_kin_serviceResponse()
-			print e
+			print(e)
 			return rep
 
 if __name__ == "__main__":
